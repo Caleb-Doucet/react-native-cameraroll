@@ -231,16 +231,17 @@ RCT_EXPORT_METHOD(getPhotos:(NSDictionary *)params
           return; // skip until we get to the first one
         }
 
+        NSArray<PHAssetResource *> *const assetResources = [PHAssetResource assetResourcesForAsset:asset];
+        if (![assetResources firstObject]) {
+          return;
+        }
+
+        PHAssetResource *const _Nonnull resource = [assetResources firstObject];
+        CFStringRef const uti = (__bridge CFStringRef _Nonnull)(resource.uniformTypeIdentifier);
+        NSString *const mimeType = (NSString *)CFBridgingRelease(UTTypeCopyPreferredTagWithClass(uti, kUTTagClassMIMEType));
+
         // Get underlying resources of an asset - this includes files as well as details about edited PHAssets
         if ([mimeTypes count] > 0) {
-          NSArray<PHAssetResource *> *const assetResources = [PHAssetResource assetResourcesForAsset:asset];
-          if (![assetResources firstObject]) {
-            return;
-          }
-
-          PHAssetResource *const _Nonnull resource = [assetResources firstObject];
-          CFStringRef const uti = (__bridge CFStringRef _Nonnull)(resource.uniformTypeIdentifier);
-          NSString *const mimeType = (NSString *)CFBridgingRelease(UTTypeCopyPreferredTagWithClass(uti, kUTTagClassMIMEType));
 
           BOOL __block mimeTypeFound = NO;
           [mimeTypes enumerateObjectsUsingBlock:^(NSString * _Nonnull mimeTypeFilter, NSUInteger idx, BOOL * _Nonnull stop) {
@@ -286,6 +287,7 @@ RCT_EXPORT_METHOD(getPhotos:(NSDictionary *)params
            @"node": @{
              @"type": assetMediaTypeLabel, // TODO: switch to mimeType?
              @"group_name": [assetCollection localizedTitle],
+             @"mimeType": mimeType,
              @"image": @{
                  @"uri": uri,
                  @"height": @([asset pixelHeight]),
