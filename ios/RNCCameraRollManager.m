@@ -230,7 +230,7 @@ RCT_EXPORT_METHOD(getPhotos:(NSDictionary *)params
           }
           return; // skip until we get to the first one
         }
- 
+
         NSArray<PHAssetResource *> *const assetResources = [PHAssetResource assetResourcesForAsset:asset];
         if (![assetResources firstObject]) {
           return;
