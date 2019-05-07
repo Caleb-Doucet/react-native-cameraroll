@@ -9,7 +9,7 @@
  */
 'use strict';
 
-import RNCCameraRoll from './nativeInterface';
+import RCTCameraRoll from './nativeInterface';
 
 const invariant = require('fbjs/lib/invariant');
 
@@ -121,7 +121,7 @@ class CameraRoll {
   }
 
   static deletePhotos(photos: Array<string>) {
-    return RNCCameraRoll.deletePhotos(photos);
+    return RCTCameraRoll.deletePhotos(photos);
   }
 
   /**
@@ -150,7 +150,7 @@ class CameraRoll {
       mediaType = 'video';
     }
 
-    return RNCCameraRoll.saveToCameraRoll(tag, mediaType);
+    return RCTCameraRoll.saveToCameraRoll(tag, mediaType);
   }
 
   /**
@@ -172,9 +172,9 @@ class CameraRoll {
       );
       let successCallback = arguments[1];
       const errorCallback = arguments[2] || (() => {});
-      RNCCameraRoll.getPhotos(params).then(successCallback, errorCallback);
+      RCTCameraRoll.getPhotos(params).then(successCallback, errorCallback);
     }
-    return RNCCameraRoll.getPhotos(params);
+    return RCTCameraRoll.getPhotos(params);
   }
 }
 
