@@ -1,1 +1,1 @@
-export default require('react-native').NativeModules.RCTCameraRoll;
+export default require('react-native').NativeModules.CameraRollManager;
